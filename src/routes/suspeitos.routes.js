@@ -53,3 +53,23 @@ let suspeito = [
       return res.status(200).json(suspeito);
   });
   
+  suspeitosRoutes.put("/:id", (req, res) => {
+    const { id } = req.params;
+    const { nome, profissão, envolvimento, nivelSuspeita } = req.body;
+
+    const suspeitoIndex = suspeitos.findIndex(suspeito => suspeito.id === Number(id));
+
+    if (suspeitoIndex < 0) {
+        return res.status(404).send({ message: "Suspeito não encontrado!" });
+    }
+
+    suspeitos[suspeitoIndex] = {
+        id: Number(id),
+        nome,
+        profissão,
+        envolvimento,
+        nivelSuspeita
+    };
+
+    return res.status(200).send(suspeitos[suspeitoIndex]);
+});

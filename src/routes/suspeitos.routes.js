@@ -2,7 +2,7 @@ import { Router } from "express";
 
 const suspeitosRoutes = Router();
 
-let suspeito = [
+let suspeitos = [
     {
       id: 1,
       nome: "P. Diddy",
@@ -28,15 +28,23 @@ let suspeito = [
         }
     ];
 
+    suspeitosRoutes.get("/", (req, res) => {
+      return res.status(200).send(suspeitos);
+  });
+
     suspeitosRoutes.post("/", (req, res) => {
-      const { nome, profissão, envolvimento, nivelSuspeita } = req.body;
-      if (!nome || !profissão || !nivelSuspeita) {
+      const { nome, profissao, envolvimento, nivelSuspeita } = req.body;
+      if (!nome || !profissao) {
           return res.status(400).send({ message: "Nome, Profissão e Nível de Suspeita são Obrigatórios" });
+      }
+
+      if (nivelSuspeita != "baixo" && nivelSuspeita != "médio" && nivelSuspeita != "alto") {
+        return res.status(400).send({ message: "Nivel de Suspeita não foi inserido" });
       }
       const novoSuspeito = {
           id: suspeitos.length + 1,
           nome,
-          profissão,
+          profissao,
           envolvimento,
           nivelSuspeita
       };
@@ -53,25 +61,37 @@ let suspeito = [
       return res.status(200).json(suspeito);
   });
   
-  suspeitosRoutes.put("/:id", (req, res) => {
-    const { id } = req.params;
-    const { nome, profissão, envolvimento, nivelSuspeita } = req.body;
+// Rota para atualizar um suspeito pelo id
+suspeitosRoutes.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { nome, profissao, envolvimento, nivelSuspeito } = req.body;
 
-    const suspeitoIndex = suspeitos.findIndex(suspeito => suspeito.id === Number(id));
+  // Busca um suspeito pelo id no array de suspeitos
+  const suspeito = suspeitos.find((politico) => politico.id == id);
 
-    if (suspeitoIndex < 0) {
-        return res.status(404).send({ message: "Suspeito não encontrado!" });
-    }
 
-    suspeitos[suspeitoIndex] = {
-        id: Number(id),
-        nome,
-        profissão,
-        envolvimento,
-        nivelSuspeita
-    };
+  if (!suspeito) {
+    return res
+      .status(404)
+      .json({ message: `Suspeito com id ${id} não encontrado!` });
+  }
 
-    return res.status(200).send(suspeitos[suspeitoIndex]);
+
+  if (!nome || !profissao) {
+    return res.status(400).send({
+      message: "O nome ou partido não foi preenchido!",
+    });
+  }
+
+  suspeito.nome = nome;
+  suspeito.profissao = profissao;
+  suspeito.envolvimento = envolvimento;
+  suspeito.nivelSuspeita = nivelSuspeito;
+
+  return res.status(200).json({
+    message: "Suspeito atualizado com sucesso!",
+    suspeito,
+  });
 });
 
 suspeitosRoutes.delete("/:id", (req, res) => {

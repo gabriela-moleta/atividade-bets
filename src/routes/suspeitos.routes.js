@@ -7,7 +7,7 @@ let suspeito = [
       id: 1,
       nome: "P. Diddy",
       profissao: "Cantor",
-      envolvimento: sim,
+      envolvimento: true,
       nivelSuspeita: "alto",
     },
 
@@ -15,7 +15,7 @@ let suspeito = [
         id: 2,
         nome: "Jay-Z",
         profissao: "Cantor",
-        envolvimento: sim,
+        envolvimento: true,
         nivelSuspeita: "alto",
     },
 
@@ -23,7 +23,7 @@ let suspeito = [
         id: 3,
         nome: "Beyonce",
         profissao: "Cantor",
-        envolvimento: sim,
+        envolvimento: true,
         nivelSuspeita: "medio",
         }
     ];
@@ -88,3 +88,5 @@ suspeitosRoutes.delete("/:id", (req, res) => {
       suspeito,
   });
 });
+
+export default suspeitosRoutes;

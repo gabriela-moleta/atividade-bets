@@ -14,3 +14,5 @@ routes.get("/", (req, res) => {
 routes.use("/suspeitos", suspeitosRoutes);
 
 export default routes;
+
+

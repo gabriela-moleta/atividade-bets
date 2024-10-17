@@ -45,5 +45,9 @@ let suspeito = [
         nivelSuspeita
     };
   })
+
+  suspeitos.push(novoSuspeito);
+      return res.status(201).send(novoSuspeito);
+  
   
   export default suspeitosRoutes;

@@ -73,3 +73,18 @@ let suspeito = [
 
     return res.status(200).send(suspeitos[suspeitoIndex]);
 });
+
+suspeitosRoutes.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  const suspeito = suspeitos.find((suspeito) => suspeito.id == id);
+
+  if (!suspeito) {
+      return res.status(404).send({ message: `Suspeito com id ${id} não foi encontrado!` });
+  }
+  suspeitos = suspeitos.filter((suspeito) => suspeito.id != id);
+
+  return res.status(200).send({
+      message: "Suspeito removido com sucesso!",
+      suspeito,
+  });
+});
